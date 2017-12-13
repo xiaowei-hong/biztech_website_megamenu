@@ -1,6 +1,0 @@
-[submodule "kbdepot_plugin"]
-	path = kbdepot_plugin
-	url = https://github.com/xiaowei-hong/kbdepot_plugin.git
-[submodule "kbdepot_plugin2"]
-	path = kbdepot_plugin2
-	url = https://github.com/xiaowei-hong/kbdepot_plugin2.git
