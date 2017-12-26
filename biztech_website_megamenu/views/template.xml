@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="assets_frontend" inherit_id="website.assets_frontend" name="Website assets">
+            <xpath expr="." postion="inside">
+                <link rel="stylesheet" href='/biztech_website_megamenu/static/src/css/style.css'/>
+                <script type="text/javascript"  src="/biztech_website_megamenu/static/src/js/custom.js"></script>
+            </xpath>
+        </template>
+
+        <template id="website_megamenu_submenu" inherit_id="website.submenu">
+
+            <xpath expr="//li[1]" position="attributes">
+                <attribute name="t-if">not submenu.child_id and not submenu.is_megamenu</attribute>
+            </xpath>
+
+            <xpath expr="//li" position='after'>
+                <li t-if="submenu.is_megamenu" t-att-class="'li-mega-menu mm_icon' if submenu.menu_icon and submenu.menu_icon_image else 'li-mega-menu'">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <t t-if="submenu.menu_icon and submenu.menu_icon_image">
+                            <img t-att-src="website.image_url(submenu, 'menu_icon_image', '30x30')"
+                                                                 class="img-responsive icon"
+                                                                 t-att-alt="submenu.name"/>
+                        </t>
+                        <span t-field="submenu.name"/> <span class="caret" t-ignore="true"></span>
+                    </a>
+
+                    <!-- 2 Column -->
+                    <t t-if="submenu.megamenu_type == '2_col'">
+                        <ul class="dropdown-menu mega-dropdown-menu row" t-att-style="'background: url(data:image/png;base64,%s); background-size: cover;' % (submenu.megamenu_bg_image) if submenu.megamenu_bg and submenu.megamenu_bg_img_color == 'bg_img' else '' 'background: %s;' % (submenu.megamenu_bg_color) if submenu.megamenu_bg and submenu.megamenu_bg_img_color == 'bg_color' else ''">
+                            <div class="row">
+                                <t t-value="website.get_public_product_category(submenu)" t-set="product_categories" />
+                                <t t-if="not product_categories">
+                                    <li class="dropdown-header message" t-att-style="'color: %s' %(submenu.main_category_color) if submenu.customize_menu_colors and submenu.main_category_color else ''">
+                                        Still, No category assigned to this menu.!!!
+                                    </li>
+                                </t>
+                                <t t-if="product_categories">
+                                    <div t-att-class="'col-md-4 col-xs-12' if submenu.category_slider else ''"
+                                         t-att-style="'float: %s' % submenu.category_slider_position if submenu.category_slider and submenu.category_slider_position else 'float:left;'">
+                                        <t t-if="submenu.category_slider">
+                                            <li>
+                                                <ul>
+                                                    <li class="dropdown-header slider_header" t-att-style="'color: %s' %(submenu.main_category_color) if submenu.customize_menu_colors and submenu.main_category_color else ''">
+                                                        <t t-esc="submenu.carousel_header_name"/>
+                                                    </li>
+                                                    <div t-att-id="'myCarousel-%s' % submenu.id" class="carousel slide" data-ride="carousel">
+                                                        <div class="carousel-inner">
+                                                            <t t-value='0' t-set='a'/>
+                                                            <t t-foreach="product_categories" t-as="categ">
+                                                                <div t-att-class="'item active' if a == 0 else 'item'">
+                                                                    <t t-value='a+1' t-set='a'/>
+                                                                    <a t-att-href="'/shop/category/%s' % slug(categ)">
+                                                                        <img t-att-src="website.image_url(categ, 'image', '300x250')"
+                                                                             t-att-alt="categ.name"
+                                                                             class="img-responsive"/>
+                                                                    </a>
+                                                                    <h4>
+                                                                        <small t-att-style="'color: %s' %(submenu.sub_category_color) if submenu.customize_menu_colors and submenu.sub_category_color else ''">
+                                                                            <t t-esc='categ.name'/>
+                                                                        </small>
+                                                                    </h4>
+                                                                </div>
+                                                            </t>
+                                                        </div>
+                                                    </div>
+                                                    <div class="carousel-control left" t-att-data-target="'#myCarousel-%s' % submenu.id" data-slide="prev" >
+                                                        <i class="fa fa-chevron-left"></i>
+                                                    </div>
+                                                    <div class="carousel-control right" t-att-data-target="'#myCarousel-%s' % submenu.id" data-slide="next" >
+                                                        <i class="fa fa-chevron-right"></i>
+                                                    </div>
+                                                </ul>
+                                            </li>
+                                        </t>
+                                    </div>
+
+                                    <div t-att-class="'col-md-8 col-xs-12 letter-spacing' if submenu.category_slider else 'col-md-12 letter-spacing'">
+                                        <t t-foreach="product_categories" t-as="category">
+                                            <li class="col-sm-6 inline-block">
+                                                <ul>
+                                                    <li class="dropdown-header">
+                                                        <a t-att-href="'/shop/category/%s' % slug(category)" t-att-style="'color: %s' %(submenu.main_category_color) if submenu.customize_menu_colors and submenu.main_category_color else ''">
+                                                            <t t-esc="category.name"/>
+                                                        </a>
+                                                    </li>
+                                                    <t t-if="category.child_id">
+                                                        <t t-foreach="category.child_id" t-as="categ">
+                                                            <t t-if="categ.include_in_megamenu == True ">
+                                                            <li class="categories">
+                                                                <a t-att-href="'/shop/category/%s' % slug(categ)" t-att-style="'color: %s' %(submenu.sub_category_color) if submenu.customize_menu_colors and submenu.sub_category_color else ''">
+                                                                    <t t-esc="categ.name"/>
+                                                                </a>
+                                                            </li>
+                                                        </t>
+                                                        </t>
+                                                    </t>
+                                                </ul>
+                                            </li>
+                                        </t>
+                                    </div>
+                                </t>
+                            </div>
+                            <div class='row' t-if="submenu.display_menu_footer" t-att-style="'color: %s' %(submenu.sub_category_color) if submenu.customize_menu_colors and submenu.sub_category_color else ''">
+                                <div class="footer">
+                                    <t t-raw='submenu.menu_footer'/>
+                                </div>
+                            </div>
+                        </ul>
+                    </t>
+
+                    <!-- 3 Column -->
+                    <t t-if="submenu.megamenu_type == '3_col'">
+                        <ul class="dropdown-menu mega-dropdown-menu row" t-att-style="'background: url(data:image/png;base64,%s); background-size: cover;' % (submenu.megamenu_bg_image) if submenu.megamenu_bg and submenu.megamenu_bg_img_color == 'bg_img' else '' 'background: %s;' % (submenu.megamenu_bg_color) if submenu.megamenu_bg and submenu.megamenu_bg_img_color == 'bg_color' else ''">
+                            <div class="row">
+                                <t t-value="website.get_public_product_category(submenu)" t-set="product_categories" />
+                                <t t-if="not product_categories">
+                                    <li class="dropdown-header message" t-att-style="'color: %s' %(submenu.main_category_color) if submenu.customize_menu_colors and submenu.main_category_color else ''">
+                                        Still, No category assigned to this menu.!!!
+                                    </li>
+                                </t>
+                                <t t-if="product_categories">
+                                    <div t-att-class="'col-md-3 col-xs-12' if submenu.category_slider else ''"
+                                         t-att-style="'float: %s' % submenu.category_slider_position if submenu.category_slider and submenu.category_slider_position else 'float:left;'">
+                                        <t t-if="submenu.category_slider">
+                                            <li class="margin">
+                                                <ul>
+                                                    <li class="dropdown-header slider_header" t-att-style="'color: %s' %(submenu.main_category_color) if submenu.customize_menu_colors and submenu.main_category_color else ''">
+                                                        <t t-esc="submenu.carousel_header_name"/>
+                                                    </li>
+                                                    <div t-att-id="'myCarousel-%s' % submenu.id" class="carousel slide" data-ride="carousel">
+                                                        <div class="carousel-inner">
+                                                            <t t-value='0' t-set='a'/>
+                                                            <t t-foreach="product_categories" t-as="categ">
+                                                                <div t-att-class="'item active' if a == 0 else 'item'">
+                                                                    <t t-value='a+1' t-set='a'/>
+                                                                    <a t-att-href="'/shop/category/%s' % slug(categ)">
+                                                                        <img t-att-src="website.image_url(categ, 'image', '300x250')"
+                                                                             t-att-alt="categ.name"
+                                                                             class="img-responsive"/>
+                                                                    </a>
+                                                                    <h4>
+                                                                        <small t-att-style="'color: %s' %(submenu.sub_category_color) if submenu.customize_menu_colors and submenu.sub_category_color else ''">
+                                                                            <t t-esc='categ.name'/>
+                                                                        </small>
+                                                                    </h4>
+                                                                </div>
+                                                            </t>
+                                                        </div>
+                                                    </div>
+                                                    <div class="carousel-control left" t-att-data-target="'#myCarousel-%s' % submenu.id" data-slide="prev" >
+                                                        <i class="fa fa-chevron-left"></i>
+                                                    </div>
+                                                    <div class="carousel-control right" t-att-data-target="'#myCarousel-%s' % submenu.id" data-slide="next" >
+                                                        <i class="fa fa-chevron-right"></i>
+                                                    </div>
+                                                </ul>
+                                            </li>
+                                        </t>
+                                    </div>
+
+                                    <div t-att-class="'col-md-9 col-xs-12 letter-spacing' if submenu.category_slider else 'col-md-12 letter-spacing'">
+                                        <t t-foreach="product_categories" t-as="category">
+                                            <li class="col-sm-4 inline-block">
+                                                <ul>
+                                                    <li class="dropdown-header">
+                                                        <a t-att-href="'/shop/category/%s' % slug(category)" t-att-style="'color: %s' %(submenu.main_category_color) if submenu.customize_menu_colors and submenu.main_category_color else ''">
+                                                            <t t-esc="category.name"/>
+                                                        </a>
+                                                    </li>
+                                                    <t t-if="category.child_id">
+                                                        <t t-foreach="category.child_id" t-as="categ">
+                                                            <t t-if="categ.include_in_megamenu == True ">
+                                                            <li class="categories">
+                                                                <a t-att-href="'/shop/category/%s' % slug(categ)" t-att-style="'color: %s' %(submenu.sub_category_color) if submenu.customize_menu_colors and submenu.sub_category_color else ''">
+                                                                    <t t-esc="categ.name"/>
+                                                                </a>
+                                                            </li>
+                                                        </t>
+                                                        </t>
+                                                    </t>
+                                                </ul>
+                                            </li>
+                                        </t>
+                                    </div>
+                                </t>
+                            </div>
+                            <div class='row' t-if="submenu.display_menu_footer" t-att-style="'color: %s' %(submenu.sub_category_color) if submenu.customize_menu_colors and submenu.sub_category_color else ''">
+                                <div class="footer">
+                                    <t t-raw='submenu.menu_footer'/>
+                                </div>
+                            </div>
+                        </ul>
+
+                    </t>
+
+                    <!-- 4 Column -->
+                    <t t-if="submenu.megamenu_type == '4_col'">
+                        <ul class="dropdown-menu mega-dropdown-menu row" t-att-style="'background: url(data:image/png;base64,%s); background-size: cover;' % (submenu.megamenu_bg_image) if submenu.megamenu_bg and submenu.megamenu_bg_img_color == 'bg_img' else '' 'background: %s;' % (submenu.megamenu_bg_color) if submenu.megamenu_bg and submenu.megamenu_bg_img_color == 'bg_color' else ''">
+                            <div class="row">
+                                <t t-value="website.get_public_product_category(submenu)" t-set="product_categories" />
+                                <t t-if="not product_categories">
+                                    <li class="dropdown-header message" t-att-style="'color: %s' %(submenu.main_category_color) if submenu.customize_menu_colors and submenu.main_category_color else ''">
+                                        Still, No category assigned to this menu.!!!
+                                    </li>
+                                </t>
+                                <t t-if="product_categories">
+                                    <div t-att-class="'col-md-3 col-xs-12' if submenu.category_slider else ''"
+                                         t-att-style="'float: %s' % submenu.category_slider_position if submenu.category_slider and submenu.category_slider_position else 'float:left;'">
+                                        <t t-if="submenu.category_slider">
+                                            <li class="margin">
+                                                <ul>
+                                                    <li class="dropdown-header slider_header" t-att-style="'color: %s' %(submenu.main_category_color) if submenu.customize_menu_colors and submenu.main_category_color else ''">
+                                                        <t t-esc="submenu.carousel_header_name"/>
+                                                    </li>
+                                                    <div t-att-id="'myCarousel-%s' % submenu.id" class="carousel slide" data-ride="carousel">
+                                                        <div class="carousel-inner">
+                                                            <t t-value='0' t-set='a'/>
+                                                            <t t-foreach="product_categories" t-as="categ">
+                                                                <div t-att-class="'item active' if a == 0 else 'item'">
+                                                                    <t t-value='a+1' t-set='a'/>
+                                                                    <a t-att-href="'/shop/category/%s' % slug(categ)">
+                                                                        <img t-att-src="website.image_url(categ, 'image', '300x250')"
+                                                                             t-att-alt="categ.name"
+                                                                             class="img-responsive"/>
+                                                                    </a>
+                                                                    <h4>
+                                                                        <small t-att-style="'color: %s' %(submenu.sub_category_color) if submenu.customize_menu_colors and submenu.sub_category_color else ''">
+                                                                            <t t-esc='categ.name'/>
+                                                                        </small>
+                                                                    </h4>
+                                                                </div>
+                                                            </t>
+                                                        </div>
+                                                    </div>
+                                                    <div class="carousel-control left" t-att-data-target="'#myCarousel-%s' % submenu.id" data-slide="prev" >
+                                                        <i class="fa fa-chevron-left"></i>
+                                                    </div>
+                                                    <div class="carousel-control right" t-att-data-target="'#myCarousel-%s' % submenu.id" data-slide="next" >
+                                                        <i class="fa fa-chevron-right"></i>
+                                                    </div>
+                                                </ul>
+                                            </li>
+                                        </t>
+                                    </div>
+
+                                    <div t-att-class="'col-md-9  col-xs-12 letter-spacing' if submenu.category_slider else 'col-md-12 letter-spacing'">
+                                        <t t-foreach="product_categories" t-as="category">
+                                            <li class="col-sm-3 inline-block">
+                                                <ul>
+                                                    <li class="dropdown-header">
+                                                        <a t-att-href="'/shop/category/%s' % slug(category)" t-att-style="'color: %s' %(submenu.main_category_color) if submenu.customize_menu_colors and submenu.main_category_color else ''">
+                                                            <t t-esc="category.name"/>
+                                                        </a>
+                                                    </li>
+                                                    <t t-if="category.child_id">
+                                                        <t t-foreach="category.child_id" t-as="categ">
+                                                            <t t-if="categ.include_in_megamenu == True ">
+                                                            <li class="categories">
+                                                                <a t-att-href="'/shop/category/%s' % slug(categ)" t-att-style="'color: %s' %(submenu.sub_category_color) if submenu.customize_menu_colors and submenu.sub_category_color else ''">
+                                                                    <t t-esc="categ.name"/>
+                                                                </a>
+                                                            </li>
+                                                           </t> 
+                                                        </t>
+                                                    </t>
+                                                   
+                                                </ul>
+                                            </li>
+                                        </t>
+                                    </div>
+                                </t>
+                            </div>
+                            <div class='row' t-if="submenu.display_menu_footer" t-att-style="'color: %s' %(submenu.sub_category_color) if submenu.customize_menu_colors and submenu.sub_category_color else ''">
+                                <div class="footer">
+                                    <t t-raw='submenu.menu_footer'/>
+                                </div>
+                            </div>
+                        </ul>
+                    </t>
+
+                </li>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>

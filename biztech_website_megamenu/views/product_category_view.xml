@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Product Category -->
+    <record id="view_product_public_category_inherit" model="ir.ui.view">
+        <field name="name">Inherited Product Public Category Form View</field>
+        <field name="model">product.public.category</field>
+        <field name="inherit_id" ref="website_sale.product_public_category_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='sequence']" position="after">
+                <field name="include_in_megamenu"/>
+            </xpath>
+            <xpath expr="//div[@class='oe_left']" position="attributes">
+                <attribute name="style">width:500px;</attribute>
+            </xpath>
+            <xpath expr="//div[@class='oe_left']/group" position="after">
+                <group attrs="{'invisible': [('include_in_megamenu', '=', False)]}">
+                    <field name="menu_id" 
+                        domain= "[('is_megamenu', '=', True)]"
+                        attrs="{'required': [('include_in_megamenu', '=', True)]}"/>
+                    <field name="description"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

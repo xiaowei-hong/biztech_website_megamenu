@@ -1,0 +1,49 @@
+ .mega-dropdown-menu .letter-spacing{letter-spacing:-0.31em}
+ .mega-dropdown-menu .inline-block { float: none;  display: inline-block;   vertical-align: top;    letter-spacing:normal;}
+.margin{margin:0 20px 0 20px;}
+header .container { position: relative;}
+
+.dropdown-menu .divider{height:0;margin: 20px 0px; }
+.navbar .mm_icon a {position: relative; padding-left:40px;}
+.navbar .mm_icon .icon{display: inline-block; left: 8px; position: absolute; bottom: 0; top: 0; margin: auto; height: 24px;}
+
+.nav .li-mega-menu  { position: static;}
+.nav .li-mega-menu img{display: inline-block;}
+
+.mega-dropdown-menu { width: 100%;}
+.li-mega-menu .dropdown-menu.mega-dropdown-menu { margin: 0; padding: 20px 15px 0; border-radius: 0;}
+
+.mega-dropdown-menu ul { margin: 0 0 20px 0; padding: 0;}
+.mega-dropdown-menu ul .categories { display: inline-block; vertical-align: top; width: 100%; background:url(../img/next.png)no-repeat left center;}
+.mega-dropdown-menu ul .dropdown-header {margin: 0 0 15px 0; padding: 0 0 8px; font-size: 15px; text-transform: uppercase; border-bottom: 1px solid #eee; font-weight: 600; width: 100%; display: inline-block; vertical-align: top; white-space: normal;} 
+.mega-dropdown-menu ul li a:hover{text-decoration: none;}
+
+.mega-dropdown-menu ul .slider_header {width: 100%; white-space: normal; display: inline-block; padding-right: 60px;}
+.mega-dropdown-menu .carousel .item > a {height: 100px; position: relative; display: inline-block; width: 100%; margin: 0px; padding: 0px;}
+.mega-dropdown-menu .carousel .item > a img { max-height: 100%; max-width: 100%; position: absolute; top: 0; bottom: 0; left: 0; right: 0; margin: auto;}
+.mega-dropdown-menu .carousel .item h4 small{ font-weight: 600;}
+
+
+.mega-dropdown-menu ul .categories:hover a { left: 10px;}
+.mega-dropdown-menu ul .categories a{left:0;position: relative; padding-left:15px; display: block ; transition:all 0.5s ease;}
+.carousel-inner img{margin:0 auto;}
+.carousel-inner{text-align: center}
+
+.mega-dropdown-menu .carousel-control { background: none; height: 30px; width: 30px; top: 0; bottom: auto; margin: auto; cursor:pointer;}
+.mega-dropdown-menu .carousel-control .fa { color: #000;}
+
+.mega-dropdown-menu .footer{padding:0; margin:0; /*border-top: 1px solid #eee;*/}
+.mega-dropdown-menu .footer p { margin: 0;}
+
+.mega-dropdown-menu .carousel-control {    bottom: auto;    color: rgb(255, 255, 255);    font-size: 20px;    left:auto;    opacity: 0.5;    position: absolute;    right:40px;    text-align: center;    text-shadow:none;  }
+.mega-dropdown-menu .carousel-control:hover{opacity:1;}
+.mega-dropdown-menu .carousel-control.right { left: auto; right:15px;}
+
+.mega-dropdown-menu .message{text-align: center; font-size:20px;text-transform: capitalize;}
+
+.mega-dropdown-menu .dropdown-header a{padding-left:0;}
+/*responsive */
+@media  (min-width:320px) and (max-width: 767px){
+  .mega-dropdown-menu .inline-block{width:100%; }
+  .mega-dropdown-menu .carousel .slide{text-align: center}
+}
